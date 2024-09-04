@@ -5,6 +5,18 @@ export default class Content extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
+  @column()
+  declare contentTypeId: number
+
+  @column()
+  declare title: string
+
+  @column()
+  declare description: string
+
+  @column()
+  declare externalUrl: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

@@ -4,7 +4,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable('users', (table) => {
       table.increments('id').primary()
-      table.string('username').notNullable().unique()
+      table.string('username').unique()
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
 
@@ -36,20 +36,20 @@ export default class extends BaseSchema {
       table.timestamp('updated_at', { useTz: true }).nullable()
     })
 
-    this.schema.createTable('text_contents', (table) => {
-      table.increments('id').primary()
-      table
-        .integer('content_id')
-        .unsigned()
-        .references('id')
-        .inTable('contents')
-        .onDelete('CASCADE')
-      table.text('markdown').notNullable()
-      table.text('body').notNullable()
+    // this.schema.createTable('text_contents', (table) => {
+    //   table.increments('id').primary()
+    //   table
+    //     .integer('content_id')
+    //     .unsigned()
+    //     .references('id')
+    //     .inTable('contents')
+    //     .onDelete('CASCADE')
+    //   table.text('markdown').notNullable()
+    //   table.text('body').notNullable()
 
-      table.timestamp('created_at', { useTz: true }).notNullable()
-      table.timestamp('updated_at', { useTz: true }).nullable()
-    })
+    //   table.timestamp('created_at', { useTz: true }).notNullable()
+    //   table.timestamp('updated_at', { useTz: true }).nullable()
+    // })
 
     this.schema.createTable('tags', (table) => {
       table.increments('id').primary()
@@ -75,6 +75,7 @@ export default class extends BaseSchema {
     })
 
     this.schema.createTable('user_favorites', (table) => {
+      table.increments('id').primary()
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table
         .integer('content_id')
@@ -88,7 +89,7 @@ export default class extends BaseSchema {
       table.timestamp('updated_at', { useTz: true }).nullable()
     })
 
-    this.schema.createTable('user_progress', (table) => {
+    this.schema.createTable('user_content_progresses', (table) => {
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table
         .integer('content_id')
@@ -97,7 +98,6 @@ export default class extends BaseSchema {
         .inTable('contents')
         .onDelete('CASCADE')
       table.string('status').notNullable().defaultTo('not_started')
-      table.timestamp('last_updated', { useTz: true }).notNullable()
       table.primary(['user_id', 'content_id'])
 
       table.timestamp('created_at', { useTz: true }).notNullable()
